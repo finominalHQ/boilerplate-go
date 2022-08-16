@@ -56,8 +56,6 @@ func (v UsersResource) List(c buffalo.Context) error {
 		return c.Render(http.StatusOK, actions.R.HTML("users/index.plush.html"))
 	}).Wants("json", func(c buffalo.Context) error {
 		return c.Render(200, actions.R.JSON(users))
-	}).Wants("xml", func(c buffalo.Context) error {
-		return c.Render(200, actions.R.XML(users))
 	}).Respond(c)
 }
 
@@ -84,8 +82,6 @@ func (v UsersResource) Show(c buffalo.Context) error {
 		return c.Render(http.StatusOK, actions.R.HTML("users/show.plush.html"))
 	}).Wants("json", func(c buffalo.Context) error {
 		return c.Render(200, actions.R.JSON(user))
-	}).Wants("xml", func(c buffalo.Context) error {
-		return c.Render(200, actions.R.XML(user))
 	}).Respond(c)
 }
 
@@ -124,8 +120,6 @@ func (v UsersResource) Create(c buffalo.Context) error {
 			return c.Render(http.StatusUnprocessableEntity, actions.R.HTML("users/new.plush.html"))
 		}).Wants("json", func(c buffalo.Context) error {
 			return c.Render(http.StatusUnprocessableEntity, actions.R.JSON(verrs))
-		}).Wants("xml", func(c buffalo.Context) error {
-			return c.Render(http.StatusUnprocessableEntity, actions.R.XML(verrs))
 		}).Respond(c)
 	}
 
@@ -137,8 +131,6 @@ func (v UsersResource) Create(c buffalo.Context) error {
 		return c.Redirect(http.StatusSeeOther, "/users/%v", user.ID)
 	}).Wants("json", func(c buffalo.Context) error {
 		return c.Render(http.StatusCreated, actions.R.JSON(user))
-	}).Wants("xml", func(c buffalo.Context) error {
-		return c.Render(http.StatusCreated, actions.R.XML(user))
 	}).Respond(c)
 }
 
@@ -180,8 +172,6 @@ func (v UsersResource) Update(c buffalo.Context) error {
 			return c.Render(http.StatusUnprocessableEntity, actions.R.HTML("users/edit.plush.html"))
 		}).Wants("json", func(c buffalo.Context) error {
 			return c.Render(http.StatusUnprocessableEntity, actions.R.JSON(verrs))
-		}).Wants("xml", func(c buffalo.Context) error {
-			return c.Render(http.StatusUnprocessableEntity, actions.R.XML(verrs))
 		}).Respond(c)
 	}
 
@@ -193,8 +183,6 @@ func (v UsersResource) Update(c buffalo.Context) error {
 		return c.Redirect(http.StatusSeeOther, "/users/%v", user.ID)
 	}).Wants("json", func(c buffalo.Context) error {
 		return c.Render(http.StatusOK, actions.R.JSON(user))
-	}).Wants("xml", func(c buffalo.Context) error {
-		return c.Render(http.StatusOK, actions.R.XML(user))
 	}).Respond(c)
 }
 
@@ -227,7 +215,5 @@ func (v UsersResource) Destroy(c buffalo.Context) error {
 		return c.Redirect(http.StatusSeeOther, "/users")
 	}).Wants("json", func(c buffalo.Context) error {
 		return c.Render(http.StatusOK, actions.R.JSON(user))
-	}).Wants("xml", func(c buffalo.Context) error {
-		return c.Render(http.StatusOK, actions.R.XML(user))
 	}).Respond(c)
 }
