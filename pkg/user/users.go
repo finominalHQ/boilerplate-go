@@ -48,13 +48,7 @@ func (v UsersResource) List(c buffalo.Context) error {
 		return err
 	}
 
-	return responder.Wants("html", func(c buffalo.Context) error {
-		// Add the paginator to the context so it can be used in the template.
-		c.Set("pagination", q.Paginator)
-
-		c.Set("users", users)
-		return c.Render(http.StatusOK, actions.R.HTML("users/index.plush.html"))
-	}).Wants("json", func(c buffalo.Context) error {
+	return responder.Wants("json", func(c buffalo.Context) error {
 		return c.Render(200, actions.R.JSON(users))
 	}).Respond(c)
 }
@@ -76,11 +70,7 @@ func (v UsersResource) Show(c buffalo.Context) error {
 		return c.Error(http.StatusNotFound, err)
 	}
 
-	return responder.Wants("html", func(c buffalo.Context) error {
-		c.Set("user", user)
-
-		return c.Render(http.StatusOK, actions.R.HTML("users/show.plush.html"))
-	}).Wants("json", func(c buffalo.Context) error {
+	return responder.Wants("json", func(c buffalo.Context) error {
 		return c.Render(200, actions.R.JSON(user))
 	}).Respond(c)
 }
@@ -109,27 +99,12 @@ func (v UsersResource) Create(c buffalo.Context) error {
 	}
 
 	if verrs.HasAny() {
-		return responder.Wants("html", func(c buffalo.Context) error {
-			// Make the errors available inside the html template
-			c.Set("errors", verrs)
-
-			// Render again the new.html template that the user can
-			// correct the input.
-			c.Set("user", user)
-
-			return c.Render(http.StatusUnprocessableEntity, actions.R.HTML("users/new.plush.html"))
-		}).Wants("json", func(c buffalo.Context) error {
+		return responder.Wants("json", func(c buffalo.Context) error {
 			return c.Render(http.StatusUnprocessableEntity, actions.R.JSON(verrs))
 		}).Respond(c)
 	}
 
-	return responder.Wants("html", func(c buffalo.Context) error {
-		// If there are no errors set a success message
-		c.Flash().Add("success", actions.T.Translate(c, "user.created.success"))
-
-		// and redirect to the show page
-		return c.Redirect(http.StatusSeeOther, "/users/%v", user.ID)
-	}).Wants("json", func(c buffalo.Context) error {
+	return responder.Wants("json", func(c buffalo.Context) error {
 		return c.Render(http.StatusCreated, actions.R.JSON(user))
 	}).Respond(c)
 }
@@ -161,27 +136,12 @@ func (v UsersResource) Update(c buffalo.Context) error {
 	}
 
 	if verrs.HasAny() {
-		return responder.Wants("html", func(c buffalo.Context) error {
-			// Make the errors available inside the html template
-			c.Set("errors", verrs)
-
-			// Render again the edit.html template that the user can
-			// correct the input.
-			c.Set("user", user)
-
-			return c.Render(http.StatusUnprocessableEntity, actions.R.HTML("users/edit.plush.html"))
-		}).Wants("json", func(c buffalo.Context) error {
+		return responder.Wants("json", func(c buffalo.Context) error {
 			return c.Render(http.StatusUnprocessableEntity, actions.R.JSON(verrs))
 		}).Respond(c)
 	}
 
-	return responder.Wants("html", func(c buffalo.Context) error {
-		// If there are no errors set a success message
-		c.Flash().Add("success", actions.T.Translate(c, "user.updated.success"))
-
-		// and redirect to the show page
-		return c.Redirect(http.StatusSeeOther, "/users/%v", user.ID)
-	}).Wants("json", func(c buffalo.Context) error {
+	return responder.Wants("json", func(c buffalo.Context) error {
 		return c.Render(http.StatusOK, actions.R.JSON(user))
 	}).Respond(c)
 }
@@ -207,13 +167,7 @@ func (v UsersResource) Destroy(c buffalo.Context) error {
 		return err
 	}
 
-	return responder.Wants("html", func(c buffalo.Context) error {
-		// If there are no errors set a flash message
-		c.Flash().Add("success", actions.T.Translate(c, "user.destroyed.success"))
-
-		// Redirect to the index page
-		return c.Redirect(http.StatusSeeOther, "/users")
-	}).Wants("json", func(c buffalo.Context) error {
+	return responder.Wants("json", func(c buffalo.Context) error {
 		return c.Render(http.StatusOK, actions.R.JSON(user))
 	}).Respond(c)
 }
